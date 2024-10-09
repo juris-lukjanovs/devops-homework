@@ -22,3 +22,13 @@ rm terraform.zip
 
 terraform version
 ```
+
+This one might also come in handy for connecting to K8s through PhpStorm.
+
+```
+curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+chmod +x ./kubectl
+sudo mv ./kubectl /usr/local/kubectl
+
+kubectl version
+```
