@@ -1,6 +1,8 @@
 #!/bin/bash
 
-SCRIPTS_DIR="$(dirname "$(realpath "$0")")/scripts"
+PROJECT_DIR="$(dirname "$(realpath "$0")")"
+SCRIPTS_DIR="$PROJECT_DIR/scripts"
+CONFIGS_DIR="$PROJECT_DIR/configs"
 
 "$SCRIPTS_DIR/install_minikube.sh"
 "$SCRIPTS_DIR/install_terraform.sh"
@@ -9,7 +11,7 @@ SCRIPTS_DIR="$(dirname "$(realpath "$0")")/scripts"
 
 MINIKUBE_STATUS=$(minikube status --format="{{.Host}}")
 
-if [ "$MINIKUBE_STATUS" == 'Stopped' ]; then
+if [ "$MINIKUBE_STATUS" != 'Running' ]; then
   echo 'Starting Minikube...'
 
   minikube start
@@ -24,4 +26,4 @@ fi
 terraform init
 terraform apply
 
-kubectl port-forward service/sonarqube-instance-sonarqube 9000:9000 -n sonarqube
+kubectl apply -f "$CONFIGS_DIR/sonarqube-ingress.yaml"
